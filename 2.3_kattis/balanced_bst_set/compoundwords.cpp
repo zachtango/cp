@@ -28,6 +28,6 @@ int main() {
     for(auto s : concat_words) {
         std::cout << s << '\n';
     }
-
+    
     return 0;
 }

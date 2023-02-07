@@ -8,7 +8,6 @@
 using namespace std;
 
 typedef vector<int> vi;
-typedef vector<string> vs;
 typedef queue<int> qi;
 
 struct Node {
@@ -34,7 +33,7 @@ int main() {
         cin >> s;
 
         if(s == "if") {
-            vs conditions;
+            vi conditions;
             bool AND = false;
             while(true) {
                 string t, o;
@@ -45,7 +44,7 @@ int main() {
                     id += 1;
                 }
 
-                conditions.push_back(t);
+                conditions.push_back(t_to_int[t]);
                 if(o == "then") {
                     cin >> t;
 
@@ -54,8 +53,7 @@ int main() {
                         id += 1;
                     }
 
-                    for(auto const &condition : conditions) {
-                        int c = t_to_int[condition];
+                    for(auto const &c : conditions) {
                         g[c].neighbors.push_back(t_to_int[t]);
 
                         if(AND) {
@@ -66,11 +64,12 @@ int main() {
                 }
                 else if(o == "and") {
                     AND = true;
-
                 }
             }
         } else {
+            cout << s << endl;
             if(t_to_int.count(s) == 0) {
+                cout << s << ' ' << id << endl;
                 t_to_int[s] = id;
                 id += 1;
             }
@@ -97,8 +96,9 @@ int main() {
             }
         }
         absolute.pop();
+        cout << "t1: " << t << endl;
         if(!ok) continue;
-
+        cout << "t2: " << t << endl;
         toppings.insert(t);
         for(auto const &tn : g[t].neighbors) {
             if(toppings.count(tn) == 0) {

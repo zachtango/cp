@@ -4,13 +4,13 @@
 using namespace std;
 
 #define MINUTES 1440
-// SOLUTION NOT FINISHED YET
-void solve(int n) {
-    
+
+void solve(int n) {   
     vector<int> profit(MINUTES, -8);
     
     int start;
     int end;
+    // get input
     for(int i = 0; i < n; i++) {
         int m;
         float p;
@@ -22,37 +22,32 @@ void solve(int n) {
         else if(i == n - 1)
             end = m;
 
-        profit[m] += (int) (p * 100);
+        profit[m] += (int) (p * 100 + 0.5); // add 0.5 to floor down
     }
 
-    int path[MINUTES];
+    // calc MSS[i] = max(MSS[i - 1] + A[i], A[i])
+    int path_start[MINUTES];
     int max_i = start;
-    path[start] = start;
+    path_start[start] = start; // starting time in the interval
+
     for(int i = start + 1; i <= end; i++) {
         int with = profit[i] + profit[i - 1];
 
         if(with > profit[i]) {
             profit[i] = with;
-            path[i] = i - 1;
+            path_start[i] = path_start[i - 1];
         } else {
-            path[i] = i;
+            path_start[i] = i;
         }
 
-        if(profit[i] > profit[max_i])
+        if(profit[i] > profit[max_i] || 
+            (profit[i] == profit[max_i] && (i - path_start[i] < max_i - path_start[max_i]))) // smaller interval
             max_i = i;
     }
 
     if(profit[max_i] > 0) {
-        cout << fixed << setprecision(2) << ( (float) profit[max_i] / 100 ) << ' ';
-
-        int end = max_i;
-        int i = max_i;
-
-        while(i != path[i]) {
-            i = path[i];
-        }
-
-        cout << i << ' ' << end << endl;
+        cout << fixed << setprecision(2) << ( (float) profit[max_i] / 100 ) << ' ' 
+            << path_start[max_i] << ' ' << max_i << endl;
     } else {
         cout << "no profit\n";
     }

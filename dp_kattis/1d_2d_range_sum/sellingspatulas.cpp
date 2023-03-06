@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <cmath>
+
 using namespace std;
 
 #define MINUTES 1440
@@ -19,10 +21,10 @@ void solve(int n) {
 
         if(i == 0)
             start = m;
-        else if(i == n - 1)
+        if(i == n - 1)
             end = m;
 
-        profit[m] += (int) (p * 100 + 0.5); // add 0.5 to floor down
+        profit[m] += (int) round(p * 100);
     }
 
     // calc MSS[i] = max(MSS[i - 1] + A[i], A[i])
